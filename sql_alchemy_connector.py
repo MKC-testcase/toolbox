@@ -23,5 +23,8 @@ class sql_alch:
     def insert(self, table, values):
         pass
 
+    def edit(self, table, column, identifier, value):
+        pass
+
     def close(self):
         pass
