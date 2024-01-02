@@ -20,12 +20,14 @@ class SQLAlchemy_Unittest(unittest.TestCase):
         # inital test start the connection with postgreSQL database
         test_connection = sql_alch(database_type=self.database_type ,username=self.user, password=self.password, 
                                    database_name=self.database_name, host_server=self.host_server)
+        test_connection.start_connection()
         self.assertEqual(test_connection.check_conn(), True)
 
     def test_close_connection(self):
         # a connvient method to close the connection for a user
         test_connection = sql_alch(database_type=self.database_type ,username=self.user, password=self.password, 
                                    database_name=self.database_name, host_server=self.host_server)
+        test_connection.start_connection()
         check = test_connection.close()
         self.assertEqual(check, True)
 
@@ -34,6 +36,7 @@ class SQLAlchemy_Unittest(unittest.TestCase):
         # tests the ability to create new tables on the database if given permission by admin
         test_connection = sql_alch(database_type=self.database_type ,username=self.user, password=self.password, 
                                    database_name=self.database_name, host_server=self.host_server)
+        test_connection.start_connection()
         result = test_connection.create_tb(tablename="Table1", id={"id": "serial", "test_col1": "varchar_50", 
                                                          "test_col2": "float", "test_col3": "integer"})
         self.assertEqual(result, True)
@@ -42,6 +45,7 @@ class SQLAlchemy_Unittest(unittest.TestCase):
         # test to see whether table created exists
         test_connection = sql_alch(database_type=self.database_type ,username=self.user, password=self.password, 
                                    database_name=self.database_name, host_server=self.host_server)
+        test_connection.start_connection()
         connected = test_connection.check_tb(tablename="Table1")
         self.assertEqual(connected, True)
 
@@ -49,6 +53,7 @@ class SQLAlchemy_Unittest(unittest.TestCase):
         # test ability to create new tables with an account that doesn't have permission (should fail)
         test_connection = sql_alch(database_type=self.database_type ,username=self.non_admin_user, password=self.password, 
                                    database_name=self.database_name, host_server=self.host_server)
+        test_connection.start_connection()
         result = test_connection.create_tb(tablename="Table1", id={"id": "serial", "test_col1": "varchar_50", 
                                                          "test_col2": "float", "test_col3": "integer"})
         self.assertEqual(result, True)
@@ -66,6 +71,7 @@ class SQLAlchemy_Unittest(unittest.TestCase):
         # tests collecting information from the database for previously collected information (get all)
         test_connection = sql_alch(database_type=self.database_type ,username=self.user, password=self.password, 
                                    database_name=self.database_name, host_server=self.host_server)
+        test_connection.start_connection()
         retrieved_results = test_connection.get_all(tablename="Table1")
         self.assertEqual(retrieved_results, [{"id": 1, "test_col1": "testing", "test_col2": 12.2, "test_col3": 5}])
         
@@ -80,6 +86,7 @@ class SQLAlchemy_Unittest(unittest.TestCase):
         # tests data can be modified in database
         test_connection = sql_alch(database_type=self.database_type ,username=self.user, password=self.password, 
                                    database_name=self.database_name, host_server=self.host_server)
+        test_connection.start_connection()
         test_connection.edit(tablename="Table1", select=["test_col2"], where={"id": 1, "test_col1": "testing"}, value=15.5)
         retrieved_results = test_connection.get_all("Table1")
         self.assertEqual(retrieved_results, [{"id": 1, "test_col1": "testing", "test_col2": 15.5, "test_col3": 5}])
@@ -88,6 +95,7 @@ class SQLAlchemy_Unittest(unittest.TestCase):
         # test the boolean result of the command vs the data retrieval results
         test_connection = sql_alch(database_type=self.database_type ,username=self.user, password=self.password, 
                                    database_name=self.database_name, host_server=self.host_server)
+        test_connection.start_connection()
         test_connection.delete(tablename="Table1", where={"id": 1, "test_col1": "testing"})
         retrieved_results = test_connection.get_all(tablename="Table1")
         self.assertEqual(retrieved_results, [{}])
@@ -96,6 +104,7 @@ class SQLAlchemy_Unittest(unittest.TestCase):
     def test_delete_table(self):
         test_connection = sql_alch(database_type=self.database_type ,username=self.user, password=self.password, 
                                    database_name=self.database_name, host_server=self.host_server)
+        test_connection.start_connection()
         test_connection.delete_tb(tablename="Table1")
         connected = test_connection.check_tb(tablename="Table1")
         self.assertEqual(connected, False)
