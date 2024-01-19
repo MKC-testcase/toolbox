@@ -37,7 +37,7 @@ class SQLAlchemy_Unittest(unittest.TestCase):
         test_connection = sql_alch(database_type=self.database_type ,username=self.user, password=self.password, 
                                    database_name=self.database_name, host_server=self.host_server)
         test_connection.start_connection()
-        result = test_connection.create_tb(tablename="Table1", id={"id": "serial", "test_col1": "varchar_50", 
+        result = test_connection.create_tb(tablename="Table1", columns={"id": "serial", "test_col1": "varchar_50", 
                                                          "test_col2": "float", "test_col3": "integer"})
         self.assertEqual(result, True)
 
@@ -54,7 +54,7 @@ class SQLAlchemy_Unittest(unittest.TestCase):
         test_connection = sql_alch(database_type=self.database_type ,username=self.non_admin_user, password=self.password, 
                                    database_name=self.database_name, host_server=self.host_server)
         test_connection.start_connection()
-        result = test_connection.create_tb(tablename="Table1", id={"id": "serial", "test_col1": "varchar_50", 
+        result = test_connection.create_tb(tablename="Table1", columns={"id": "serial", "test_col1": "varchar_50", 
                                                          "test_col2": "float", "test_col3": "integer"})
         self.assertEqual(result, True)
 
